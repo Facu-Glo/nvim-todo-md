@@ -12,6 +12,4 @@ M.setup = function(opts)
     end, { desc = "Abrir ToDo.md" })
 end
 
-
-
 return M
