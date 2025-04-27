@@ -1,15 +1,31 @@
 local M = {}
+local default_template = require("todo.template")
 
 M.setup = function(opts)
     opts = opts or {}
-    local path = opts.path or "~/toDo.md"
+
+    local path = vim.fn.expand(opts.path or "~/toDo.md")
+
     local keys = {
         open = opts.keys and opts.keys.open or "<leader>td",
         toggle = opts.keys and opts.keys.toggle or "<leader>tc",
         close = opts.keys and opts.keys.close or "q"
     }
 
+    local template = opts.template or default_template
+
     vim.keymap.set("n", keys.open, function()
+        if vim.fn.filereadable(path) == 0 then
+            local file = io.open(path, "w")
+            if file then
+                file:write(template)
+                file:close()
+            else
+                print("No se pudo crear el archivo: " .. path)
+                return
+            end
+        end
+
         vim.cmd("edit " .. path)
 
         local function toggle_checkbox()
