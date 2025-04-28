@@ -30,16 +30,16 @@ con lazy.nvim:
 opts = {
     path = "~/ruta/a/todo.md",   -- Ruta personalizada (opcional)
     template = [[]],             -- Contenido inicial (opcional)
-    keys = {                     -- Atajos personalizables
+    keys = {                     -- Atajos personalizables (opcional)
       open = "<leader>td"
-      toggle = "<leader>tc"
+      toggle = "<leader>tm"
       close = "q"
     }
 }
 ```
 ### Comportamiento por defecto
 Si no se especifica path, el plugin usará:
-~/todo.md (en tu directorio home)
+~/toDo.md (en tu directorio home)
 
 ### Uso basico
 | comando                      | Accion                              |
