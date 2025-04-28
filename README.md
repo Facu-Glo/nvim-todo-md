@@ -14,7 +14,7 @@ Características:
 - ✅ Alterna entre [ ] y [x] con un atajo
 - ⚙️ Configuración mínima necesaria
 
-
+https://github.com/user-attachments/assets/34f9d4b9-6f9d-49f8-bfd4-9cb64b9e504a
 
 ## Instalación 🔧
 con lazy.nvim:
