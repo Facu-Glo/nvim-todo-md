@@ -46,7 +46,6 @@ local function open_file(opts)
     vim.bo[buf].swapfile = false
 
     vim.api.nvim_set_current_buf(buf)
-    vim.cmd("MarkdownPreview")
 
     vim.api.nvim_buf_set_keymap(buf, "n", opts.keys.close, "", {
         noremap = true,
