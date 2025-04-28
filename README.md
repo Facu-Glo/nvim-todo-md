@@ -29,7 +29,7 @@ con lazy.nvim:
 ```lua
 opts = {
     path = "~/ruta/a/todo.md",   -- Ruta personalizada (opcional)
-    template = [[]],             -- Contenido inicial (opcional)
+    template = {},             -- Contenido inicial (opcional)
     keys = {                     -- Atajos personalizables (opcional)
       open = "<leader>td"
       toggle = "<leader>tm"
