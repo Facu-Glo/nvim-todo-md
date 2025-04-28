@@ -1,14 +1,44 @@
 local M = {}
 
+
 local default_opts = {
     path = nil,
     template = require("todo.template"),
+    float = {
+        enable = true,
+        width = 80,
+        height = 20,
+        border = "rounded",
+        center = true,
+    },
     keys = {
         open = "<leader>td",
         close = "q",
         toggle = "<leader>tm",
     }
 }
+
+local function center(outer, inner)
+    return (outer - inner) / 2
+end
+
+local function window_config(opts)
+    local width = opts.float.width
+    local height = opts.float.height
+
+    local row = 0
+    if opts.float.center then
+        row = center(vim.o.lines, height)
+    end
+    return {
+        relative = "editor",
+        width = width,
+        height = height,
+        col = center(vim.o.columns, width),
+        row = row,
+        border = opts.float.border,
+    }
+end
 
 local function toggle_checkbox()
     local line = vim.api.nvim_get_current_line()
@@ -22,6 +52,14 @@ local function toggle_checkbox()
         end
     end)
     vim.api.nvim_set_current_line(new_line)
+end
+
+local function comand_close(opts, win)
+    if opts.float.enable and win then
+        vim.api.nvim_win_close(win, true)
+    else
+        vim.cmd('bdelete')
+    end
 end
 
 local function open_file(opts)
@@ -39,13 +77,14 @@ local function open_file(opts)
 
     local buf = vim.fn.bufnr(expanded_path, true)
 
-    if buf == -1 then
-        vim.api.nvim_create_buf(false, false)
-    end
-
     vim.bo[buf].swapfile = false
 
-    vim.api.nvim_set_current_buf(buf)
+    local win
+    if opts.float.enable then
+        win = vim.api.nvim_open_win(buf, true, window_config(opts))
+    else
+        vim.api.nvim_set_current_buf(buf)
+    end
 
     vim.api.nvim_buf_set_keymap(buf, "n", opts.keys.close, "", {
         noremap = true,
@@ -54,7 +93,7 @@ local function open_file(opts)
             if vim.api.nvim_get_option_value("modified", { buf = buf }) then
                 vim.notify("Guarda los cambios realizados", vim.log.levels.WARN)
             else
-                vim.cmd('bdelete')
+                comand_close(opts, win)
             end
         end
     })
