@@ -1,7 +1,7 @@
 local M = {}
 
 local default_opts = {
-    target_file = nil,
+    path = nil,
     template = require("todo.template"),
     keys = {
         open = "<leader>td",
@@ -25,14 +25,14 @@ local function toggle_checkbox()
 end
 
 local function open_file(opts)
-    local expanded_path = vim.fn.expand(opts.target_file or "~/toDo.md")
+    local expanded_path = vim.fn.expand(opts.path or "~/toDo.md")
 
-    if opts.target_file and vim.fn.filereadable(expanded_path) == 0 then
+    if opts.path and vim.fn.filereadable(expanded_path) == 0 then
         vim.notify("Archivo no encontrado: " .. expanded_path, vim.log.levels.ERROR)
         return
     end
 
-    if not opts.target_file and vim.fn.filereadable(expanded_path) == 0 then
+    if not opts.path and vim.fn.filereadable(expanded_path) == 0 then
         vim.fn.writefile(opts.template, expanded_path)
         vim.notify("Archivo toDo creado en: " .. expanded_path, vim.log.levels.INFO)
     end
