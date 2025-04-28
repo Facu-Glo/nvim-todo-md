@@ -1,10 +1,10 @@
-return [[
-# ToDo List
-
-## Tareas Pendientes
-- [ ] Tarea ejemplo 1
-- [ ] Tarea ejemplo 2
-
-## Completadas
-- [x] Tarea ejemplo 3
-]]
+return {
+    "# ToDo List",
+    "",
+    "## Tareas Pendientes",
+    "- [ ] Tarea 1",
+    "- [ ] Tarea 2",
+    "",
+    "## Completadas",
+    "- [x] Tarea completada",
+}
