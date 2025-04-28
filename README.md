@@ -9,7 +9,7 @@ Un **toDo.md** es un archivo en formato Markdown que contiene listas de tareas c
 - [x] Tarea completada
 ```
 
-Caracteristicas:
+Características:
 - 📂 Crea/abre automáticamente ~/todo.md (ruta configurable)
 - ✅ Alterna entre [ ] y [x] con un atajo
 - ⚙️ Configuración mínima necesaria
@@ -45,5 +45,5 @@ Si no se especifica path, el plugin usará:
 | comando                      | Accion                              |
 | :----------------------------| :---------------------------------- |
 | `\<leader>td`                | Abrir/crear archivo de tareas       |
-| `\<leader>tc`                | Alternar checkbox ([ ] ↔ [x])       |
+| `\<leader>tm`                | Alternar checkbox ([ ] ↔ [x])       |
 | `q`                          | Cerrar el buffer                    |
