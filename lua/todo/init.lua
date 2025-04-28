@@ -1,5 +1,7 @@
 local M = {}
 
+local win = nil
+
 local default_opts = {
     path = nil,
     template = require("todo.template"),
@@ -64,9 +66,10 @@ local function toggle_checkbox()
     vim.api.nvim_set_current_line(new_line)
 end
 
-local function comand_close(opts, win)
+local function comand_close(opts)
     if opts.float.enable and win then
         vim.api.nvim_win_close(win, true)
+        win = nil
     else
         vim.cmd('bdelete')
     end
@@ -89,7 +92,10 @@ local function open_file(opts)
 
     vim.bo[buf].swapfile = false
 
-    local win
+    if win and vim.api.nvim_win_is_valid(win) then
+        comand_close(opts)
+    end
+
     if opts.float.enable then
         win = vim.api.nvim_open_win(buf, true, window_config(opts))
     else
@@ -103,7 +109,7 @@ local function open_file(opts)
             if vim.api.nvim_get_option_value("modified", { buf = buf }) then
                 vim.notify("Guarda los cambios realizados", vim.log.levels.WARN)
             else
-                comand_close(opts, win)
+                comand_close(opts)
             end
         end
     })
