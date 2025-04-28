@@ -56,7 +56,7 @@ Si no se especifica path, el plugin usará:
 - `:ToDoAdd` → Agrega una nueva tarea.
 
 ### Uso básico
-| comando                      | Acción                              |
+| Atajo                      | Acción                              |
 | :----------------------------| :---------------------------------- |
 | `<leader>td`                | Abrir/crear archivo de tareas       |
 | `<leader>tm`                | Alternar checkbox ([ ] ↔ [x])       |
