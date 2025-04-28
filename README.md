@@ -14,7 +14,7 @@ Características:
 - ✅ Alterna entre [ ] y [x] con un atajo
 - ⚙️ Configuración mínima necesaria
 
-https://github.com/user-attachments/assets/34f9d4b9-6f9d-49f8-bfd4-9cb64b9e504a
+https://github.com/user-attachments/assets/8fcdbcfe-9dea-49fb-b715-ac3257273938
 
 ## Instalación 🔧
 con lazy.nvim:
@@ -38,9 +38,10 @@ opts = {
         center = true,
     },
     keys = {                     -- Atajos personalizables (opcional)
-      open   = "<leader>td",
-      toggle = "<leader>tm",
-      close  = "q",
+        open   = "<leader>td",
+        toggle = "<leader>tm",
+        add    = "<leader>ta",
+        close  = "q",
     }
 }
 ```
@@ -48,11 +49,17 @@ opts = {
 Si no se especifica path, el plugin usará:
 ~/toDo.md (en tu directorio home)
 
+## Comandos
+
+- `:ToDo` → Abre el gestor de tareas.
+- `:ToDoToggle` → Alterna el estado de la tarea (✓ / ☐).
+- `:ToDoAdd` → Agrega una nueva tarea.
+
 ### Uso básico
 | comando                      | Acción                              |
 | :----------------------------| :---------------------------------- |
 | `<leader>td`                | Abrir/crear archivo de tareas       |
 | `<leader>tm`                | Alternar checkbox ([ ] ↔ [x])       |
+| `<leader>ta`                          | Agregar tarea                    |
 | `q`                          | Cerrar el buffer                    |
 
-También podés abrir el archivo usando el comando :ToDo desde la línea de comandos de Neovim.
