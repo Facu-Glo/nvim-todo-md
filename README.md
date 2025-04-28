@@ -51,7 +51,7 @@ Si no se especifica path, el plugin usará:
 ### Uso básico
 | comando                      | Acción                              |
 | :----------------------------| :---------------------------------- |
-| `\<leader>td`                | Abrir/crear archivo de tareas       |
-| `\<leader>tm`                | Alternar checkbox ([ ] ↔ [x])       |
+| `<leader>td`                | Abrir/crear archivo de tareas       |
+| `<leader>tm`                | Alternar checkbox ([ ] ↔ [x])       |
 | `q`                          | Cerrar el buffer                    |
 
