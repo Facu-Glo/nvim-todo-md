@@ -1,22 +1,32 @@
 local M = {}
 
-
 local default_opts = {
     path = nil,
     template = require("todo.template"),
     float = {
         enable = true,
-        width = 80,
+        width  = 80,
         height = 20,
         border = "rounded",
         center = true,
     },
     keys = {
-        open = "<leader>td",
-        close = "q",
+        open   = "<leader>td",
         toggle = "<leader>tm",
+        add    = "<leader>ta",
+        close  = "q",
     }
 }
+
+local function add_task()
+    vim.ui.input({ prompt = "Nueva tarea:" }, function(input)
+        if input and input ~= "" then
+            local line = "- [ ] " .. input
+            local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+            vim.api.nvim_buf_set_lines(0, row, row, false, { line })
+        end
+    end)
+end
 
 local function center(outer, inner)
     return (outer - inner) / 2
@@ -98,6 +108,13 @@ local function open_file(opts)
         end
     })
 
+    vim.api.nvim_buf_set_keymap(0, "n", opts.keys.add, "", {
+        noremap = true,
+        silent = true,
+        callback = add_task,
+        desc = "Agregar tarea"
+    })
+
     vim.api.nvim_buf_set_keymap(0, "n", opts.keys.toggle, "", {
         noremap = true,
         silent = true,
@@ -111,6 +128,14 @@ local function setup_user(opts)
 
     vim.api.nvim_create_user_command("ToDo", function()
         open_file(opts)
+    end, {})
+
+    vim.api.nvim_create_user_command("ToDoCheck", function()
+        toggle_checkbox()
+    end, {})
+
+    vim.api.nvim_create_user_command("ToDoAdd", function()
+        add_task()
     end, {})
 
     vim.keymap.set("n", opts.keys.open, function()
