@@ -55,3 +55,4 @@ Si no se especifica path, el plugin usará:
 | `<leader>tm`                | Alternar checkbox ([ ] ↔ [x])       |
 | `q`                          | Cerrar el buffer                    |
 
+También podés abrir el archivo usando el comando :ToDo desde la línea de comandos de Neovim.
