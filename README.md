@@ -38,10 +38,10 @@ opts = {
         center = true,
     },
     keys = {                     -- Atajos personalizables (opcional)
-        open   = "<leader>td",
-        toggle = "<leader>tm",
-        add    = "<leader>ta",
-        close  = "q",
+        open         = "<leader>td",
+        toggle_check = "<leader>tm",
+        add          = "<leader>ta",
+        close        = "q",
     }
 }
 ```
@@ -52,7 +52,7 @@ Si no se especifica path, el plugin usará:
 ## Comandos
 
 - `:ToDo` → Abre el gestor de tareas.
-- `:ToDoToggle` → Alterna el estado de la tarea (✓ / ☐).
+- `:ToDoCheck` → Alterna el estado de la tarea (✓ / ☐).
 - `:ToDoAdd` → Agrega una nueva tarea.
 
 ### Uso básico
