@@ -13,10 +13,10 @@ local default_opts = {
         center = true,
     },
     keys = {
-        open   = "<leader>td",
-        toggle = "<leader>tm",
-        add    = "<leader>ta",
-        close  = "q",
+        open         = "<leader>td",
+        toggle_check = "<leader>tm",
+        add          = "<leader>ta",
+        close        = "q",
     }
 }
 
@@ -121,7 +121,7 @@ local function open_file(opts)
         desc = "Agregar tarea"
     })
 
-    vim.api.nvim_buf_set_keymap(0, "n", opts.keys.toggle, "", {
+    vim.api.nvim_buf_set_keymap(0, "n", opts.keys.toggle_check, "", {
         noremap = true,
         silent = true,
         callback = toggle_checkbox,
