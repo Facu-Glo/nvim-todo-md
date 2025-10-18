@@ -16,6 +16,7 @@ local default_opts = {
         open         = "<leader>td",
         toggle_check = "<leader>tm",
         add          = "<leader>ta",
+        convert      = "<leader>tc",
         close        = "q",
     }
 }
@@ -66,6 +67,19 @@ local function toggle_checkbox()
     vim.api.nvim_set_current_line(new_line)
 end
 
+
+local function make_task()
+    local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+    local line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
+
+    if not line or line:match("^%-%s%[.%]%s") then
+        return
+    end
+
+    local new_line = "- [ ] " .. line
+    vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
+end
+
 local function comand_close(opts)
     if opts.float.enable and win then
         vim.api.nvim_win_close(win, true)
@@ -75,22 +89,67 @@ local function comand_close(opts)
     end
 end
 
+local function setup_keymaps(buf, opts, expanded_path)
+    vim.api.nvim_create_autocmd("BufWriteCmd", {
+        buffer = buf,
+        callback = function()
+            local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+            vim.fn.writefile(lines, expanded_path)
+            vim.bo[buf].modified = false
+            vim.notify("File saved: " .. expanded_path, vim.log.levels.INFO)
+        end,
+    })
+
+    vim.api.nvim_buf_set_keymap(buf, "n", opts.keys.close, "", {
+        noremap = true,
+        silent = true,
+        callback = function()
+            if vim.api.nvim_get_option_value("modified", { buf = buf }) then
+                vim.notify("Save the changes made.", vim.log.levels.WARN)
+            else
+                comand_close(opts)
+            end
+        end
+    })
+
+    vim.api.nvim_buf_set_keymap(buf, "n", opts.keys.add, "", {
+        noremap = true,
+        silent = true,
+        callback = add_task,
+        desc = "Add task"
+    })
+
+    vim.api.nvim_buf_set_keymap(buf, "n", opts.keys.toggle_check, "", {
+        noremap = true,
+        silent = true,
+        callback = toggle_checkbox,
+        desc = "Toggle task status (✓/ )"
+    })
+
+    vim.api.nvim_buf_set_keymap(buf, "n", opts.keys.convert, "", {
+        noremap = true,
+        silent = true,
+        callback = make_task,
+        desc = "Convert current line to task"
+    })
+end
+
 local function open_file(opts)
     local expanded_path = vim.fn.expand(opts.path or "~/toDo.md")
 
-    if opts.path and vim.fn.filereadable(expanded_path) == 0 then
-        vim.notify("Archivo no encontrado: " .. expanded_path, vim.log.levels.ERROR)
-        return
-    end
-
-    if not opts.path and vim.fn.filereadable(expanded_path) == 0 then
-        vim.fn.writefile(opts.template, expanded_path)
-        vim.notify("Archivo toDo creado en: " .. expanded_path, vim.log.levels.INFO)
-    end
-
-    local buf = vim.fn.bufnr(expanded_path, true)
-
+    local buf = vim.api.nvim_create_buf(false, false)
+    vim.bo[buf].buftype = "acwrite"
+    vim.bo[buf].bufhidden = "wipe"
     vim.bo[buf].swapfile = false
+    vim.bo[buf].filetype = "markdown"
+
+    vim.api.nvim_buf_set_name(buf, expanded_path)
+
+    if vim.fn.filereadable(expanded_path) == 1 then
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.fn.readfile(expanded_path))
+    elseif opts.template then
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, opts.template)
+    end
 
     if win and vim.api.nvim_win_is_valid(win) then
         comand_close(opts)
@@ -102,32 +161,9 @@ local function open_file(opts)
         vim.api.nvim_set_current_buf(buf)
     end
 
-    vim.api.nvim_buf_set_keymap(buf, "n", opts.keys.close, "", {
-        noremap = true,
-        silent = true,
-        callback = function()
-            if vim.api.nvim_get_option_value("modified", { buf = buf }) then
-                vim.notify("Guarda los cambios realizados", vim.log.levels.WARN)
-            else
-                comand_close(opts)
-            end
-        end
-    })
-
-    vim.api.nvim_buf_set_keymap(0, "n", opts.keys.add, "", {
-        noremap = true,
-        silent = true,
-        callback = add_task,
-        desc = "Agregar tarea"
-    })
-
-    vim.api.nvim_buf_set_keymap(0, "n", opts.keys.toggle_check, "", {
-        noremap = true,
-        silent = true,
-        callback = toggle_checkbox,
-        desc = "Alternar estado de la tarea (✓/ )"
-    })
+    setup_keymaps(buf, opts, expanded_path)
 end
+
 
 local function setup_user(opts)
     opts = vim.tbl_deep_extend("force", default_opts, opts)
@@ -146,7 +182,7 @@ local function setup_user(opts)
 
     vim.keymap.set("n", opts.keys.open, function()
         open_file(opts)
-    end, { desc = "Abrir toDo" })
+    end, { desc = "Open toDo" })
 end
 
 M.setup = function(opts)
