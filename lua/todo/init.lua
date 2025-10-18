@@ -90,6 +90,8 @@ local function comand_close(opts)
 end
 
 local function setup_keymaps(buf, opts, expanded_path)
+    local modify = { initial = vim.api.nvim_buf_get_changedtick(buf) }
+
     vim.api.nvim_create_autocmd("BufWriteCmd", {
         buffer = buf,
         callback = function()
@@ -97,6 +99,7 @@ local function setup_keymaps(buf, opts, expanded_path)
             vim.fn.writefile(lines, expanded_path)
             vim.bo[buf].modified = false
             vim.notify("File saved: " .. expanded_path, vim.log.levels.INFO)
+            modify.initial = vim.api.nvim_buf_get_changedtick(buf)
         end,
     })
 
@@ -104,7 +107,8 @@ local function setup_keymaps(buf, opts, expanded_path)
         noremap = true,
         silent = true,
         callback = function()
-            if vim.api.nvim_get_option_value("modified", { buf = buf }) then
+            local current_tick = vim.api.nvim_buf_get_changedtick(buf)
+            if current_tick ~= modify.initial then
                 vim.notify("Save the changes made.", vim.log.levels.WARN)
             else
                 comand_close(opts)
