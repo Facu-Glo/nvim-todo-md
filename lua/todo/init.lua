@@ -32,6 +32,7 @@ local function setup_user(opts)
 
     vim.api.nvim_create_user_command("ToDoCheck", tasks.toggle_checkbox, {})
     vim.api.nvim_create_user_command("ToDoAdd", tasks.add_task, {})
+    vim.api.nvim_create_user_command("ToDoMake", tasks.make_task, {})
 
     vim.keymap.set("n", opts.keys.open, function()
         core.open_file(opts, keymaps.setup_keymaps)

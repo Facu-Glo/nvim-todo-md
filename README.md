@@ -38,9 +38,10 @@ opts = {
         center = true,
     },
     keys = {                     -- Atajos personalizables (opcional)
+        add          = "<leader>ta",
+        convert      = "<leader>tc",
         open         = "<leader>td",
         toggle_check = "<leader>tm",
-        add          = "<leader>ta",
         close        = "q",
     }
 }
@@ -54,6 +55,7 @@ Si no se especifica path, el plugin usará:
 - `:ToDo` → Abre el gestor de tareas.
 - `:ToDoCheck` → Alterna el estado de la tarea (✓ / ☐).
 - `:ToDoAdd` → Agrega una nueva tarea.
+- `:ToDoMake` → Convierte el texto en una tarea.
 
 ### Uso básico
 | Atajo                      | Acción                              |
@@ -61,5 +63,6 @@ Si no se especifica path, el plugin usará:
 | `<leader>td`                | Abrir/crear archivo de tareas       |
 | `<leader>tm`                | Alternar checkbox ([ ] ↔ [x])       |
 | `<leader>ta`                          | Agregar tarea                    |
+| `<leader>tc`                          | Transformar en tarea                   |
 | `q`                          | Cerrar el buffer                    |
 
