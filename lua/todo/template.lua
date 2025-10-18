@@ -1,10 +1,10 @@
 return {
     "# ToDo List",
     "",
-    "## Tareas Pendientes",
-    "- [ ] Tarea 1",
-    "- [ ] Tarea 2",
+    "## Pending Tasks",
+    "- [ ] Task 1",
+    "- [ ] Task 2",
     "",
-    "## Completadas",
-    "- [x] Tarea completada",
+    "## Completed",
+    "- [x] Completed task",
 }
