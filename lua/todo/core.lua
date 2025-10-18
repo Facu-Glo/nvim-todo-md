@@ -33,18 +33,21 @@ end
 
 function M.open_file(opts, setup_keymaps)
     local expanded_path = vim.fn.expand(opts.path or "~/toDo.md")
-    local buf = vim.api.nvim_create_buf(false, false)
 
-    vim.bo[buf].buftype = "acwrite"
-    vim.bo[buf].bufhidden = "wipe"
-    vim.bo[buf].swapfile = false
-    vim.bo[buf].filetype = "markdown"
-    vim.api.nvim_buf_set_name(buf, expanded_path)
+    local buf = vim.fn.bufnr(expanded_path)
+    if buf == -1 then
+        buf = vim.api.nvim_create_buf(false, false)
+        vim.bo[buf].buftype = "acwrite"
+        vim.bo[buf].bufhidden = "wipe"
+        vim.bo[buf].swapfile = false
+        vim.bo[buf].filetype = "markdown"
+        vim.api.nvim_buf_set_name(buf, expanded_path)
 
-    if vim.fn.filereadable(expanded_path) == 1 then
-        vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.fn.readfile(expanded_path))
-    elseif opts.template then
-        vim.api.nvim_buf_set_lines(buf, 0, -1, false, opts.template)
+        if vim.fn.filereadable(expanded_path) == 1 then
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.fn.readfile(expanded_path))
+        elseif opts.template then
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, opts.template)
+        end
     end
 
     if win and vim.api.nvim_win_is_valid(win) then
